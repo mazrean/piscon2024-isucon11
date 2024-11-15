@@ -25,7 +25,7 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	_ "github.com/mazrean/isucon-go-tools/v2"
-	isucache "github.com/mazrean/isucon-go-tools/v2/cache"
+	isutools "github.com/mazrean/isucon-go-tools/v2"
 	isudb "github.com/mazrean/isucon-go-tools/v2/db"
 	isuhttp "github.com/mazrean/isucon-go-tools/v2/http"
 )
@@ -310,7 +310,8 @@ func getJIAServiceURL(tx *sqlx.Tx) string {
 // POST /initialize
 // サービスを初期化
 func postInitialize(c echo.Context) error {
-	isucache.AllPurge()
+	isutools.BeforeInitialize()
+	defer isutools.AfterInitialize()
 
 	var request InitializeRequest
 	err := c.Bind(&request)
